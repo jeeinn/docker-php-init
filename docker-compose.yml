@@ -79,11 +79,11 @@ services:
         restart: on-failure:3
 
     # 安装 composer
-    composer:
-        image: composer/composer:alpine
-        container_name: composer
-        volumes:
-            - ./www:/app
-        depends_on:
-            - php-fpm
-        restart: 'no'
+#    composer:
+#        image: composer/composer:alpine
+#        container_name: composer
+#        volumes:
+#            - ./www:/app
+#        depends_on:
+#            - php-fpm
+#        restart: 'no'

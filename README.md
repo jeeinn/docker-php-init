@@ -8,7 +8,7 @@
 * db (mysql:latest)
 * php-fpm (php:7.0-fpm-alpine)
 * nginx (nginx:alpine)
-* composer (composer/composer:alpine)
+* ~~composer (composer/composer:alpine)~~
 
 ##使用方法
 下载
@@ -47,3 +47,5 @@ docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker
 * deploy（存储持久化数据、配置文件、Dockerfile）
 * www   （存储开发所使用的网站程序数据）
 
+## 更新
+* 移除了`composer`，推荐自行安装 2017-01-10
