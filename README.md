@@ -3,7 +3,7 @@
 * Docker-compose (>1.6.0)
 
 ##容器
-* volumes_www (程序源码)
+* volumes_www (应用代码)
 * cache (redis:alpine)
 * db (mysql:latest)
 * php-fpm (php:7.0-fpm-alpine)
@@ -48,4 +48,4 @@ docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker
 * www   （存储开发所使用的网站程序数据）
 
 ## 更新
-* 移除了`composer`，推荐自行安装 2017-01-10
+* 移除了`composer`，推荐自行安装，请参考[docker-composer](https://github.com/RobLoach/docker-composer) 2017-01-10
