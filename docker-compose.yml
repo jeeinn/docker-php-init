@@ -1,0 +1,89 @@
+version: '2'
+services:
+    # 存储
+    volumes_www:
+        image: tianon/true
+        container_name: volumes_www
+        volumes:
+            - ./www:/var/www/html
+            - /etc/localtime:/etc/localtime
+
+    # 缓存
+    cache:
+        image: redis:alpine
+        container_name: cache-redis
+        ports:
+            - "6379:6379"
+
+    # 数据库
+    db:
+        image: mysql:latest
+        container_name: db-mysql
+        volumes:
+            # 数据库存储地址
+            - ./deploy/mysql/data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+           #- MYSQL_DATABASE=database_name
+           #- MYSQL_USER=user
+           #- MYSQL_PASSWORD=password
+        ports:
+            # 允许客户端进入 3306
+            - "3306:3306"
+        depends_on:
+            - cache
+        restart: on-failure:3
+
+    # php-fpm
+    php-fpm:
+        build: deploy/php-fpm
+        container_name: php-fpm
+        volumes_from:
+            - volumes_www
+        volumes:
+            - ./deploy/php-fpm/config/php.ini:/usr/local/etc/php/php.ini
+        environment:
+            - REDIS_HOST=redis
+            # Set your APP env variables here:
+            # - APP_KEY=
+            # - DB_HOST=
+            # - DB_DATABASE=
+            # - DB_USERNAME=
+            # - DB_PASSWORD=
+        links:
+            - cache
+            - db
+        depends_on:
+            - cache
+            - db
+        ports:
+            - "9000"
+        restart: on-failure:3
+
+    # 网站服务
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        volumes_from:
+            - volumes_www
+        volumes:
+            - ./deploy/nginx/conf.d:/etc/nginx/conf.d
+            - ./deploy/nginx/logs:/var/log/nginx
+        links:
+            - php-fpm
+        depends_on:
+            - php-fpm
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: on-failure:3
+
+    # 安装 composer
+    composer:
+        image: composer/composer:alpine
+        container_name: composer
+        volumes:
+            - ./www:/app
+        depends_on:
+            - php-fpm
+        restart: 'no'
