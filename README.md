@@ -41,7 +41,7 @@ docker kill $(docker ps -q) ; docker rm $(docker ps -a -q)
 ```
 docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker images -q -a) 
 ```
-[点此查看更多常用命令](http://dockerlux.github.io/pdf/cheat-sheet-v2.pdf?spm=5176.100239.blogcont57839.60.kfpwer&file=cheat-sheet-v2.pdf)
+[点此查看更多常用命令](https://docs.docker.com/compose/reference/)
 
 ##文件结构
 * deploy（存储持久化数据、配置文件、Dockerfile）
